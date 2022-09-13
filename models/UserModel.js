@@ -22,7 +22,14 @@ const UserModel = new Schema({
   state : {
     type : Boolean,
     default : false
+  },
+  admin : {
+    type : Boolean,
+    default : false
   }
+}, {
+  versionKey : false,
+  timestamps : true
 })
 
 module.exports = model('User', UserModel)
