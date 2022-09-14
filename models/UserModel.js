@@ -1,4 +1,4 @@
-const { Schema, model} = require('mongoose')
+const { Schema, model } = require('mongoose')
 
 const UserModel = new Schema({
   nameComplete : {
@@ -11,6 +11,7 @@ const UserModel = new Schema({
   },
   phone : {
     type : Number,
+    trim : true
   },
   adress : {
     type : String,
