@@ -22,7 +22,7 @@ const addUser = async (req, res) => {
     if(!userSaved) throw new CustomError('falla al guardar el usuario', 500)
     res.status(201).json({message : "usuario creado"})
   } catch (error) {
-    res.status(404 || error.code).json({message : error.message})
+    res.status(400 || error.code).json({message : error.message})
   }
 }
 
@@ -48,18 +48,24 @@ const deleteUser = async (req, res) => {
   }
 }
 
-// const updateUser = async (req, res) => {
-//   const { id } = req.params
-//   try {
+const updateByIdUser = async (req, res) => {
+  try {
+    const body = req.body
+    const { id } = req.params
+    const updateUser = await UserModel.findByIdAndUpdate(id, body, {new : true})
+    if(!updateUser) throw new CustomError('usuario no encontrado', 404)
+    res.status(200).json({message : 'usuario actualizado', updateUser})
+  } catch (error) {
+    res.status(error.code || 400).json({message : error.message})
+  }
+}
     
-//   } catch (error) {
     
-//   }
-// }
 
 module.exports = {
   getAllUsers,
   getUserById,
   addUser,
-  deleteUser
+  deleteUser,
+  updateByIdUser
 }
