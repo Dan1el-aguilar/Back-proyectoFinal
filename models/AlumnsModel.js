@@ -23,4 +23,4 @@ const AlumnModel = new Schema({
   }
 })
 
-module.exports = model('Alumns', AlumnModel)
+module.exports = model('Alumn', AlumnModel)

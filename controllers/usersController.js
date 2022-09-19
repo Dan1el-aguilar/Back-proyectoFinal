@@ -8,8 +8,8 @@ const getAllUsers = async (req, res) => {
       UserModel.count(),
       UserModel.find().skip((limit * page) - limit).limit(limit)
     ])
-    if(users.length === 0) throw new CustomError('sin resultados', 404)
-    res.status(200).json({userCount, page, users})
+    if(users.length === 0) throw new CustomError('no hay registros para mostrar.', 404)
+    res.status(200).json({total : userCount, page, users})
   } catch (error) {
     res.status(400 || error.code).json({message : error.message})
   }
@@ -44,7 +44,7 @@ const deleteUser = async (req, res) => {
     if(!userDeleted) throw new CustomError('usuario no encontrado', 404)
     res.status(200).json({message : "usuario eliminado"})
   } catch (error) {
-    res.status(404).json({message : error.message})
+    res.status(error.code || 400).json({message : error.message})
   }
 }
 
