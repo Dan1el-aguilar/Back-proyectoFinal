@@ -4,12 +4,12 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 dotenv.config()
-const connectionDB = require('../db/db')
+const connectionDB = require('./db/db')
 connectionDB()
-const userRoutes = require('../routes/users.routes')
-const alumnsRoutes = require('../routes/alumns.routes')
-const subjectRoutes = require('../routes/subject.routes')
-const loginRoute = require('../routes/login.routes')
+const userRoutes = require('./routes/users.routes')
+const alumnsRoutes = require('./routes/alumns.routes')
+const subjectRoutes = require('./routes/subject.routes')
+const loginRoute = require('./routes/login.routes')
 const port = process.env.PORT
 
 app.use(cors())
