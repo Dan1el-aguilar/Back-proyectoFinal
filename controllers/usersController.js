@@ -1,5 +1,6 @@
 const CustomError = require("../helpers/customError")
 const UserModel = require("../models/UserModel")
+const bcrypt = require('bcrypt')
 
 const getAllUsers = async (req, res) => {
   try {
@@ -15,9 +16,15 @@ const getAllUsers = async (req, res) => {
   }
 }
 
-const addUser = async (req, res) => {
+const registerUser = async (req, res) => {
   try {
-    const newUser = new UserModel(req.body)
+    const { password, ...user } = req.body
+    const salt = bcrypt.genSaltSync(10)
+    const passwordEncripted = bcrypt.hashSync(password, salt)
+    const newUser = new UserModel({
+      ...user,
+      password: passwordEncripted
+    })
     const userSaved = await newUser.save()
     if(!userSaved) throw new CustomError('falla al guardar el usuario', 500)
     res.status(201).json({message : "usuario creado"})
@@ -65,7 +72,7 @@ const updateByIdUser = async (req, res) => {
 module.exports = {
   getAllUsers,
   getUserById,
-  addUser,
+  registerUser,
   deleteUser,
   updateByIdUser
 }

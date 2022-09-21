@@ -3,11 +3,18 @@ const { Schema, model } = require('mongoose')
 const UserModel = new Schema({
   nameComplete : {
     type: String,
-    trim : true
+    trim : true,
+    required: true
   },
   email : {
     type : String,
-    trim : true
+    trim : true,
+    required: true
+  },
+  password:{
+    type : String,
+    trim : true,
+    required: true
   },
   phone : {
     type : Number,
