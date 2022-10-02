@@ -7,7 +7,7 @@ const getAllUsers = async (req, res) => {
   const { limit = 15, page = 1} = req.query
    const [userCount, users] = await Promise.all([
       UserModel.count(),
-      UserModel.find().skip((limit * page) - limit).limit(limit)
+      UserModel.find().skip((limit * page) - limit).limit(limit).populate('students')
     ])
     if(users.length === 0) throw new CustomError('no hay registros para mostrar.', 404)
     res.status(200).json({total : userCount, page, users})
@@ -57,6 +57,7 @@ const deleteUser = async (req, res) => {
 
 const updateByIdUser = async (req, res) => {
   try {
+    req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
     const body = req.body
     const { id } = req.params
     const updateUser = await UserModel.findByIdAndUpdate(id, body, {new : true})
@@ -66,13 +67,11 @@ const updateByIdUser = async (req, res) => {
     res.status(error.code || 400).json({message : error.message})
   }
 }
-    
-    
 
 module.exports = {
   getAllUsers,
   getUserById,
   registerUser,
   deleteUser,
-  updateByIdUser
+  updateByIdUser,
 }
