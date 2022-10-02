@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 
 const UserModel = new Schema({
-  nameComplete : {
+  name : {
     type: String,
     trim : true,
     required: true
@@ -31,10 +31,16 @@ const UserModel = new Schema({
     type : Boolean,
     default : false
   },
-  admin : {
-    type : Boolean,
-    default : false
-  }
+  role : {
+    type : String,
+    required: true,
+    enum: ['USER', 'ADMIN'],
+    default: 'USER'
+  },
+  students: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Alumn'
+  }]
 }, {
   versionKey : false,
   timestamps : true
