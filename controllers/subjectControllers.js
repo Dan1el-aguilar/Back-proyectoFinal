@@ -8,7 +8,7 @@ const getAllSubjects = async (req, res) => {
       SubjectModel.count(),
       SubjectModel.find().skip((limit * page) - limit).limit(limit)
     ])
-    res.status(200).json({total : subjectCount, subjects})
+    res.status(200).json({total : subjectCount, page, subjects})
   } catch (error) {
     res.status(404).json({message : error.message})
   }
