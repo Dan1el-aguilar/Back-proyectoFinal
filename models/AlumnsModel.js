@@ -17,10 +17,17 @@ const AlumnModel = new Schema({
     type : Number,
     trim : true
   },
+  subjects: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Subject'
+  }],
   adress : {
     type : String,
     trim : true
   }
+}, {
+  versionKey: false,
+  timestamps: true
 })
 
 module.exports = model('Alumn', AlumnModel)
