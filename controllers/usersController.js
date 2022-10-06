@@ -16,6 +16,7 @@ const getAllUsers = async (req, res) => {
   }
 }
 
+
 const registerUser = async (req, res) => {
   try {
     const { password, ...user } = req.body

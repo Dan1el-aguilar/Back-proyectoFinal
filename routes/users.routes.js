@@ -3,11 +3,13 @@ const { getAllUsers, registerUser, getUserById, deleteUser, updateByIdUser } = r
 const { check } = require('express-validator'); 
 const validateFields = require('../middlewares/validateFields');
 const emailUnique = require('../helpers/emailUnique');
+const veryfyAuth = require('../middlewares/veryfyAuth');
+const veryfyAdmin = require('../middlewares/veryfyAdmin')
 const route = Router()
 
-route.get('/', getAllUsers)
+route.get('/',[veryfyAuth, veryfyAdmin], getAllUsers)
 
-route.get('/:id',
+route.get('/:id',[veryfyAuth, veryfyAdmin],
  check('id').isMongoId().withMessage('No es un ID de MongoDB'),
 validateFields
  , getUserById)
@@ -24,12 +26,12 @@ check('role').isIn(['USER', 'ADMIN']).withMessage('indique rol').optional(),
 validateFields
 ], registerUser)
 
-route.delete('/:id',
+route.delete('/:id',[veryfyAuth, veryfyAdmin],
 check('id').isMongoId().withMessage('No es un ID de MongoDB'),
 validateFields
 , deleteUser)
 
-route.put('/:id',
+route.put('/:id', veryfyAuth,
 check('id').isMongoId().withMessage('No es un ID de MongoDB'),
 check('name').isLength({min: 3, max: 25}).withMessage('minimo 3 y maximo 25 caracteres').optional(),
 check('password').matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/).withMessage('minimo 8 caracteres, una letra mayuscula, un numero y una caracter especial').optional(),
