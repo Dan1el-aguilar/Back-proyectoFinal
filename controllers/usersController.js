@@ -69,10 +69,21 @@ const updateByIdUser = async (req, res) => {
   }
 }
 
+const auth = async (req, res) => {
+  try {
+    const id = req.id
+    const user = await UserModel.findById(id)
+    if(!user) throw new CustomError('Usuario no encontrado', 404)
+  } catch (error) {
+    res.status(error.code || 500).json({message: error.message})
+  }
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
   registerUser,
   deleteUser,
   updateByIdUser,
+  auth
 }
