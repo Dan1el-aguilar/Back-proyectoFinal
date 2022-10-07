@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getAllUsers, registerUser, getUserById, deleteUser, updateByIdUser } = require('../controllers/usersController');
+const { getAllUsers, registerUser, getUserById, deleteUser, updateByIdUser, auth } = require('../controllers/usersController');
 const { check } = require('express-validator'); 
 const validateFields = require('../middlewares/validateFields');
 const emailUnique = require('../helpers/emailUnique');
@@ -9,12 +9,14 @@ const route = Router()
 
 route.get('/',[veryfyAuth, veryfyAdmin], getAllUsers)
 
+route.get('/auth', veryfyAuth, auth)
+
 route.get('/:id',[veryfyAuth, veryfyAdmin],
  check('id').isMongoId().withMessage('No es un ID de MongoDB'),
 validateFields
  , getUserById)
 
- route.post('/',[
+route.post('/',[
 check('name').not().isEmpty().withMessage('campo Nombre Requerido').isLength({min: 3, max:25}).withMessage('minimo 3 y maximo 25 caracteres'),
 check('email').isEmail().withMessage('Ingrese un mail Valido').custom(emailUnique),
 check('password').matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/).withMessage('minimo 8 caracteres, una letra mayuscula, un numero y una caracter especial').isLength({max: 30}).withMessage('Maximo 30 caracteres'),
