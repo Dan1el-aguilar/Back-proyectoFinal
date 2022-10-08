@@ -74,6 +74,7 @@ const auth = async (req, res) => {
     const id = req.id
     const user = await UserModel.findById(id)
     if(!user) throw new CustomError('Usuario no encontrado', 404)
+    res.status(200).json(user)
   } catch (error) {
     res.status(error.code || 500).json({message: error.message})
   }
