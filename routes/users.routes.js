@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { getAllUsers, registerUser, getUserById, deleteUser, updateByIdUser, auth } = require('../controllers/usersController');
+const { getAllUsers, registerUser, getUserById, deleteUser, updateByIdUser, auth, getUsersIsAcepted } = require('../controllers/usersController');
 const { check } = require('express-validator'); 
 const validateFields = require('../middlewares/validateFields');
 const emailUnique = require('../helpers/emailUnique');
@@ -10,6 +10,8 @@ const route = Router()
 route.get('/',[veryfyAuth, veryfyAdmin], getAllUsers)
 
 route.get('/auth', veryfyAuth, auth)
+
+route.get('/isacepted', getUsersIsAcepted)
 
 route.get('/:id',[veryfyAuth, veryfyAdmin],
  check('id').isMongoId().withMessage('No es un ID de MongoDB'),
@@ -40,7 +42,7 @@ check('password').matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*
 check('phone').matches(/^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/).withMessage('Ingrese un numero de telefono valido').optional(),
 check('adress').isLength({min: 5, max: 25}).withMessage('ingrese una direccion').optional(),
 check('courseInCharge').not().isEmpty().isLength({min: 3, max: 30}).withMessage('Ingrese su Curso, Minimo 3 y Maximo 30  Caracteres').optional(),
-check('state').isBoolean({strict: true}).optional().withMessage('ingrese un Booleano (true o false)'),
+check('state').isBoolean({strict: true}).withMessage('ingrese un Booleano (true o false)').optional(),
 check('role').isIn(['USER', 'ADMIN']).withMessage('indique rol').optional(),
 validateFields, 
 updateByIdUser)

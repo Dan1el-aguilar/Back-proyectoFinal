@@ -16,6 +16,20 @@ const getAllUsers = async (req, res) => {
   }
 }
 
+const getUsersIsAcepted = async (req, res) => {
+  try {
+  const { limit = 15, page = 1} = req.query
+   const [userCount, users] = await Promise.all([
+      UserModel.count(),
+      UserModel.find().skip((limit * page) - limit).limit(limit).populate('students').select('-students -courseInCharge -phone -adress -updatedAt')
+    ])
+    if(users.length === 0) throw new CustomError('no hay registros para mostrar.', 404)
+    res.status(200).json({total : userCount, page, users})
+  } catch (error) {
+    res.status(400 || error.code).json({message : error.message})
+  }
+}
+
 
 const registerUser = async (req, res) => {
   try {
@@ -86,5 +100,6 @@ module.exports = {
   registerUser,
   deleteUser,
   updateByIdUser,
-  auth
+  auth,
+  getUsersIsAcepted
 }
