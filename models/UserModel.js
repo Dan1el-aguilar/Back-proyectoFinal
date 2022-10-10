@@ -46,4 +46,8 @@ const UserModel = new Schema({
   timestamps : true
 })
 
+UserModel.methods.toJSON = function() {
+  const { password, ...user } = this.toObject()
+  return user
+}
 module.exports = model('User', UserModel)
