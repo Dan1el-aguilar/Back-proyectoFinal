@@ -19,7 +19,7 @@ route.delete('/:id',[veryfyAuth, veryfyAdmin],check('id').isMongoId().withMessag
 
 route.post('/', [veryfyAuth, veryfyAdmin],
 check('nameCompleted').not().isEmpty().isLength({min: 3, max: 20}).withMessage('Campo requerido'),
-check('curse').not().isEmpty().isLength({min: 3, max: 20}).withMessage('Campo requerido'),
+check('curse').not().isEmpty().isLength({min: 1, max: 20}).withMessage('Campo requerido'),
 check('cuoteDay').isBoolean({strict: true}).withMessage('solo campo Booleano').optional(),
 check('phone').matches(/^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/).withMessage('ingrese un Numero de teléfono Válido'),
 check('adress').isLength({min: 5, max: 30}).withMessage('minimo 5 y maximo 30 caracteres'),
