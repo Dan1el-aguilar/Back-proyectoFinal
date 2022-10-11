@@ -6,7 +6,7 @@ const getAllSubjects = async (req, res) => {
     const { limit = 15, page = 1} = req.query
     const [ subjectCount, subjects] = await Promise.all([
       SubjectModel.count(),
-      SubjectModel.find().skip((limit * page) - limit).limit(limit)
+      SubjectModel.find().skip((limit * page) - limit).limit(limit).populate('students teacher')
     ])
     res.status(200).json({total : subjectCount, page, subjects})
   } catch (error) {
@@ -58,10 +58,23 @@ const updateByIdSubjects = async (req, res) => {
   }
 }
 
+const addStudentToSubject = async (req, res) => {
+  try {
+    const { id, idSubject } = req.body
+    const subject = await SubjectModel.findById(idSubject)
+    subject.students.push(id)
+    const subjectUpdate = await SubjectModel.findByIdAndUpdate(idSubject, {students: subject.students}, {new: true})
+    res.status(200).json({message: 'Estudiante agregado', subjectUpdate})
+  } catch (error) {
+    res.status(error.code || 400).json({message : error.message})
+  }
+}
+
 module.exports = {
   addSubject,
   getAllSubjects,
   deleteSubject,
   getSubjectById,
-  updateByIdSubjects
+  updateByIdSubjects,
+  addStudentToSubject
 }

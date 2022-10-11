@@ -37,10 +37,6 @@ const UserModel = new Schema({
     enum: ['USER', 'ADMIN'],
     default: 'USER'
   },
-  students: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Alumn'
-  }]
 }, {
   versionKey : false,
   timestamps : true

@@ -7,7 +7,7 @@ const getAllUsers = async (req, res) => {
   const { limit = 15, page = 1} = req.query
    const [userCount, users] = await Promise.all([
       UserModel.count(),
-      UserModel.find().skip((limit * page) - limit).limit(limit).populate('students')
+      UserModel.find().skip((limit * page) - limit).limit(limit)
     ])
     if(users.length === 0) throw new CustomError('no hay registros para mostrar.', 404)
     res.status(200).json({total : userCount, page, users})
@@ -21,7 +21,7 @@ const getUsersIsAcepted = async (req, res) => {
   const { limit = 15, page = 1} = req.query
    const [userCount, users] = await Promise.all([
       UserModel.count(),
-      UserModel.find().skip((limit * page) - limit).limit(limit).populate('students').select('-students -courseInCharge -phone -adress -updatedAt')
+      UserModel.find().skip((limit * page) - limit).limit(limit).select('-students -courseInCharge -phone -adress -updatedAt')
     ])
     if(users.length === 0) throw new CustomError('no hay registros para mostrar.', 404)
     res.status(200).json({total : userCount, page, users})
