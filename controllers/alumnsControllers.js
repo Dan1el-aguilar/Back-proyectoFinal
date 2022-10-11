@@ -6,7 +6,7 @@ const getAllAlumns = async (req, res) => {
     const { limit = 15, page = 1 } = req.query
     const [alumnsCount, alumns] = await Promise.all([
       AlumnModel.count(),
-      AlumnModel.find().skip((limit * page) - limit).limit(limit).populate('subjects')
+      AlumnModel.find().skip((limit * page) - limit).limit(limit)
     ])
     if(alumns.length === 0) throw new CustomError('no hay alumnos', 404)
     res.status(200).json({alumnsCount, alumns})

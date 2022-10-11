@@ -5,6 +5,14 @@ const SubjectModel = new Schema({
     type : String,
     trim : true,
     required : true
+  },
+  students: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Alumn'
+  }],
+  teacher: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
   }
 },{
   versionKey : false,
