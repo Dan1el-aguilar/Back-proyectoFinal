@@ -17,7 +17,7 @@ const getAllSubjects = async (req, res) => {
 const getSubjectById = async (req, res) => {
   try {
     const { id } = req.params
-    const subjectById = await SubjectModel.findById(id)
+    const subjectById = await SubjectModel.findById(id).populate('students teacher')
     if(!subjectById) throw new CustomError('materia no encontrada', 404)
     res.status(200).json(subjectById)
   } catch (error) {
