@@ -6,12 +6,12 @@ const validateFields = require('../middlewares/validateFields')
 const veryfyAuth = require('../middlewares/veryfyAuth')
 const veryfyAdmin = require('../middlewares/veryfyAdmin')
 
-route.get('/', [veryfyAuth, veryfyAdmin], getAllAlumns)
+route.get('/', [veryfyAuth], getAllAlumns)
 
 route.get('/search', veryfyAuth,
 check('search').isLength({max: 20}).withMessage('Maximo 20 caracteres'),validateFields, searchAlumn)
 
-route.get('/:id', [veryfyAuth, veryfyAdmin],
+route.get('/:id', [veryfyAuth],
 check('id').isMongoId().withMessage('no es ID de MongoDB'), validateFields
 , getByIdAlumn)
 
