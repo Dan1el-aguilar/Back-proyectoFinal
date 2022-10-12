@@ -70,11 +70,27 @@ const addStudentToSubject = async (req, res) => {
   }
 }
 
+const deleteStudentToSubject = async (req, res) => {
+  try {
+    const { id, idSubject } = req.body
+    const subject = await SubjectModel.findById(idSubject)
+    if(!subject) throw new CustomError('Materia no Encontrada')
+    const indexStudent = subject.students.findIndex((i) => i._id === id )
+    if(!indexStudent) throw new CustomError('Alumno no encontrado') 
+    subject.students.splice(indexStudent, 1)
+    const subjectUpdate = await SubjectModel.findByIdAndUpdate(idSubject, {students: subject.students}, {new: true})
+    res.status(200).json({ message: "Alumno Eliminado", subjectUpdate })
+  } catch (error) {
+    res.status(error.code || 400).json({message : error.message})
+  }
+}
+
 module.exports = {
   addSubject,
   getAllSubjects,
   deleteSubject,
   getSubjectById,
   updateByIdSubjects,
-  addStudentToSubject
+  addStudentToSubject,
+  deleteStudentToSubject
 }
