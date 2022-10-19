@@ -6,10 +6,7 @@ const getAllSubjects = async (req, res) => {
     const { limit = 15, page = 1 } = req.query;
     const [subjectCount, subjects] = await Promise.all([
       SubjectModel.count(),
-      SubjectModel.find()
-        .skip(limit * page - limit)
-        .limit(limit)
-        .populate("students teacher"),
+      SubjectModel.find().skip(limit * page - limit).limit(limit).populate("students teacher"),
     ]);
     res.status(200).json({ total: subjectCount, page, subjects });
   } catch (error) {
@@ -20,9 +17,7 @@ const getAllSubjects = async (req, res) => {
 const getSubjectById = async (req, res) => {
   try {
     const { id } = req.params;
-    const subjectById = await SubjectModel.findById(id).populate(
-      "students teacher"
-    );
+    const subjectById = await SubjectModel.findById(id).populate("students teacher");
     if (!subjectById) throw new CustomError("materia no encontrada", 404);
     res.status(200).json(subjectById);
   } catch (error) {
@@ -55,9 +50,7 @@ const updateByIdSubjects = async (req, res) => {
   try {
     const { id } = req.params;
     const body = req.body;
-    const updateSubject = await SubjectModel.findByIdAndUpdate(id, body, {
-      new: true,
-    });
+    const updateSubject = await SubjectModel.findByIdAndUpdate(id, body, {new: true});
     if (!updateSubject) throw new CustomError("materia no encontrada", 404);
     res.status(200).json(updateSubject);
   } catch (error) {
@@ -70,11 +63,7 @@ const addStudentToSubject = async (req, res) => {
     const { id, idSubject } = req.body;
     const subject = await SubjectModel.findById(idSubject);
     subject.students.push(id);
-    const subjectUpdate = await SubjectModel.findByIdAndUpdate(
-      idSubject,
-      { students: subject.students },
-      { new: true }
-    );
+    const subjectUpdate = await SubjectModel.findByIdAndUpdate(idSubject,{ students: subject.students },{ new: true });
     res.status(200).json({ message: "Estudiante agregado", subjectUpdate });
   } catch (error) {
     res.status(error.code || 400).json({ message: error.message });
@@ -87,11 +76,7 @@ const deleteStudentToSubject = async (req, res) => {
     const subject = await SubjectModel.findById(idSubject);
     if (!subject) throw new CustomError("Materia no Encontrada");
     subject.students = subject.students.filter((student) => student._id != id);
-    const subjectUpdate = await SubjectModel.findByIdAndUpdate(
-      idSubject,
-      { students: subject.students },
-      { new: true }
-    );
+    const subjectUpdate = await SubjectModel.findByIdAndUpdate(idSubject,{ students: subject.students },{ new: true });
     res.status(200).json({ message: "Alumno Eliminado", subjectUpdate });
   } catch (error) {
     res.status(error.code || 400).json({ message: error.message });
