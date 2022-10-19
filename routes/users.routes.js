@@ -5,7 +5,7 @@ const validateFields = require('../middlewares/validateFields');
 const emailUnique = require('../helpers/emailUnique');
 const veryfyAuth = require('../middlewares/veryfyAuth');
 const veryfyAdmin = require('../middlewares/veryfyAdmin');
-const verifyIsUserIsLog = require('../middlewares/verifyIsUserIsLog');
+const verifyIsUserIsLoginTodelete = require('../middlewares/verifyIsUserIsLog');
 const route = Router()
 
 route.get('/',[veryfyAuth], getAllUsers)
@@ -31,7 +31,7 @@ check('role').isIn(['USER', 'ADMIN']).withMessage('indique rol').optional(),
 validateFields
 ], registerUser)
 
-route.delete('/:id',[veryfyAuth, veryfyAdmin, verifyIsUserIsLog],
+route.delete('/:id',[veryfyAuth, veryfyAdmin, verifyIsUserIsLoginTodelete],
 check('id').isMongoId().withMessage('No es un ID de MongoDB'),
 validateFields
 , deleteUser)
