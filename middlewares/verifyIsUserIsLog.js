@@ -1,5 +1,5 @@
 
-const verifyIsUserIsLog = (req, res, next) => {
+const verifyIsUserIsLoginTodelete = (req, res, next) => {
  try {
   const { id } = req.params
   const idUser = req.id
@@ -13,4 +13,4 @@ const verifyIsUserIsLog = (req, res, next) => {
  }
 }
 
-module.exports = verifyIsUserIsLog
+module.exports = verifyIsUserIsLoginTodelete
