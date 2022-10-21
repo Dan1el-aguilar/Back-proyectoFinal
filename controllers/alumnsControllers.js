@@ -8,7 +8,6 @@ const getAllAlumns = async (req, res) => {
       AlumnModel.count(),
       AlumnModel.find().skip((limit * page) - limit).limit(limit)
     ])
-    if(alumns.length === 0) throw new CustomError('no hay alumnos', 404)
     res.status(200).json({alumnsCount, alumns})
   } catch (error) {
     res.status(400 || error.code).json({message : error.message})
