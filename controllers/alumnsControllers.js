@@ -8,7 +8,7 @@ const getAllAlumns = async (req, res) => {
       AlumnModel.count(),
       AlumnModel.find().skip((limit * page) - limit).limit(limit)
     ])
-    res.status(200).json({alumnsCount, alumns})
+    res.status(200).json({alumnsCount, page, alumns,})
   } catch (error) {
     res.status(400 || error.code).json({message : error.message})
   }
