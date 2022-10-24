@@ -25,7 +25,7 @@ check('email').isEmail().withMessage('Ingrese un mail Valido').custom(emailUniqu
 check('password').matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/).withMessage('minimo 8 caracteres, una letra mayuscula, un numero y una caracter especial').isLength({max: 30}).withMessage('Maximo 30 caracteres'),
 check('phone').matches(/^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/).withMessage('Ingrese un numero de telefono valido'),
 check('adress').isLength({min: 5, max: 25}).withMessage('ingrese una direccion'),
-check('courseInCharge').not().isEmpty().isLength({min: 3, max: 30}).withMessage('Ingrese su Curso, Minimo 3 y Maximo 30  Caracteres'),
+check('courseInCharge').not(),
 check('state').isBoolean({strict: true}).optional().withMessage('ingrese un Booleano (true o false)'),
 check('role').isIn(['USER', 'ADMIN']).withMessage('indique rol').optional(),
 validateFields
