@@ -71,7 +71,6 @@ const deleteUser = async (req, res) => {
 
 const updateByIdUser = async (req, res) => {
   try {
-    req.body.password = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10))
     const body = req.body
     const { id } = req.params
     const updateUser = await UserModel.findByIdAndUpdate(id, body, {new : true})
